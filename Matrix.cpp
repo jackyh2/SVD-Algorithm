@@ -25,11 +25,11 @@ Matrix::Matrix(const std::vector<std::vector<double>>& data) {
 	nCols = m[0].size();
 }
 
-int Matrix::numRows() {
+int Matrix::numRows() const {
 	return nRows;
 }
 
-int Matrix::numCols() {
+int Matrix::numCols() const {
 	return nCols;
 }
 
@@ -109,7 +109,7 @@ Matrix operator*(const Matrix& a, const Matrix& b) {
 
 	Matrix res(a.numRows(), b.numCols());
 
-	
+	return res;
 }
 
 

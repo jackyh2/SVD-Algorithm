@@ -13,8 +13,8 @@ public:
 	Matrix(int r, int c); //r rows, c columns - default initialised to 0 matrix.
 	Matrix(const std::vector<std::vector<double>>& data);
 
-	int numRows();
-	int numCols();
+	int numRows() const;
+	int numCols() const;
 	double getElem(int r, int c);
 	void setElem(int r, int c, double val);
 

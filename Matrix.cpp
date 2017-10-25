@@ -1,9 +1,13 @@
 #include <iostream>
 #include <cassert>
+#include <iomanip>
 
 #include "Matrix.h"
 
 Matrix::Matrix(int r, int c) {
+	assert(r > 0);
+	assert(c > 0);
+
 	m = std::vector<std::vector<double>>(r, std::vector<double>(c));
 	nRows = r;
 	nCols = c;
@@ -29,15 +33,34 @@ int Matrix::numCols() {
 	return nCols;
 }
 
-void Matrix::setZeroMatrix() {
+double Matrix::getElem(int r, int c) {
+	assert(r >= 0);
+	assert(c >= 0);
+	assert(r < nRows);
+	assert(c < nCols);
+
+	return m[r][c];
+}
+
+void Matrix::setElem(int r, int c, double val) {
+	assert(r >= 0);
+	assert(c >= 0);
+	assert(r < nRows);
+	assert(c < nCols);
+
+	m[r][c] = val;
+}
+
+Matrix& Matrix::setZeroMatrix() {
 	for (auto r = m.begin(); r != m.end(); ++r) {
 		for (auto c = r->begin(); c != r->end(); ++c) {
 			*c = 0;
 		}
 	}
+	return *this;
 }
 
-void Matrix::setIdentityMatrix() {
+Matrix& Matrix::setIdentityMatrix() {
 	assert (nRows == nCols);
 
 	for (int r = 0; r < nRows; ++r) {
@@ -49,16 +72,48 @@ void Matrix::setIdentityMatrix() {
 			}
 		}
 	}
+
+	return *this;
+}
+
+Matrix Matrix::adjoint() {
+	Matrix adj(nCols, nRows);
+
+	for (int c = 0; c < nCols; ++c) {
+		for (int r = 0; r < nRows; ++r) {
+			adj.setElem(c, r, m[r][c]);
+		}
+	}
+	return adj;
+}
+
+void Matrix::printMatrix() const {
+	printMatrix(std::cout);
 }
 
 
-void Matrix::printMatrix() {
-
+void Matrix::printMatrix(std::ostream& os) const {
+	//std::setprecision(2);
+	//os << std::fixed;
 	for (auto r = m.begin(); r != m.end(); ++r) {
 		for (auto c = r->begin(); c != r->end(); ++c){
-			std::cout << *c << " ";
+			os << *c << " ";
 		}
-		std::cout << std::endl;
+		os << std::endl;
 	}
 
+}
+
+Matrix operator*(const Matrix& a, const Matrix& b) {
+	assert(a.numCols() == b.numRows());
+
+	Matrix res(a.numRows(), b.numCols());
+
+	
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m) {
+	m.printMatrix(os);
+	return os;
 }

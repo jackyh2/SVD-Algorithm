@@ -4,7 +4,7 @@
 #include <vector>
 
 class Matrix {
-public:
+private:
 	std::vector<std::vector<double>> m;
 	int nRows;
 	int nCols;
@@ -15,14 +15,24 @@ public:
 
 	int numRows();
 	int numCols();
+	double getElem(int r, int c);
+	void setElem(int r, int c, double val);
 
+	Matrix& setZeroMatrix();
+	Matrix& setIdentityMatrix();
 
-	void setZeroMatrix();
-	void setIdentityMatrix();
+	Matrix adjoint();
 
-	void printMatrix();
+	void printMatrix() const;
+	void printMatrix(std::ostream& os) const;
 
 };
+
+Matrix operator*(const Matrix& a, const Matrix& b);
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m);
+
+
 
 
 

@@ -16,7 +16,14 @@ int main() {
 
 	Matrix m(t);
 
-	m.setZeroMatrix();
+	//m.setZeroMatrix();
+
 
 	m.printMatrix();
+
+	std::cout << std::endl;
+
+	Matrix h = m.adjoint();
+
+	std::cout << h;
 }

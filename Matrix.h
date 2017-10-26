@@ -1,7 +1,9 @@
-#ifndef DLX_H
-#define DLX_H
+#ifndef MATRIX_H
+#define MATRIX_H
 
 #include <vector>
+
+const double eps = 1e-6;
 
 class Matrix {
 private:
@@ -13,10 +15,18 @@ public:
 	Matrix(int r, int c); //r rows, c columns - default initialised to 0 matrix.
 	Matrix(const std::vector<std::vector<double>>& data);
 
+	Matrix& operator=(const Matrix& a);
+	Matrix& operator*=(const Matrix& a);
+	Matrix& operator*=(double k);
+	Matrix& operator+=(const Matrix& a);
+	Matrix& operator-=(const Matrix& a);
+
 	int numRows() const;
 	int numCols() const;
-	double getElem(int r, int c);
+	double getElem(int r, int c) const;
 	void setElem(int r, int c, double val);
+	std::vector<std::vector<double>> getMatrix() const;
+	bool isSymmetric() const;
 
 	Matrix& setZeroMatrix();
 	Matrix& setIdentityMatrix();
@@ -29,16 +39,13 @@ public:
 };
 
 Matrix operator*(const Matrix& a, const Matrix& b);
+Matrix operator*(const Matrix& a, double k);
+Matrix operator*(double k, const Matrix& b);
+bool operator==(const Matrix& a, const Matrix& b);
+Matrix operator+(const Matrix& a, const Matrix& b);
+Matrix operator-(const Matrix& a, const Matrix& b);
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m);
-
-
-
-
-
-
-
-
 
 
 #endif

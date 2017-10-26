@@ -26,4 +26,33 @@ int main() {
 	Matrix h = m.adjoint();
 
 	std::cout << h;
+
+	std::cout << std::endl << std::endl;
+
+	std::vector<std::vector<double>> a1(3);
+	a1[0] = {1, 2, 3};
+	a1[1] = {2, 3, 4};
+	a1[2] = {3, 4, 5};
+
+	std::vector<std::vector<double>> b1(3);
+
+	b1[0] = {-1, 1, 1};
+	b1[1] = {2, 2, 2};
+	b1[2] = {3, 1, 2};
+
+	Matrix a(a1);
+	Matrix b(b1);
+
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
+	//std::cout << -1 * b << std::endl;
+	a -= b;
+	std::cout << a << std::endl;
+
+	Matrix adj = a * a.adjoint();
+
+	std::cout << adj.isSymmetric() << std::endl;
+
+	std::cout << adj;
+
 }

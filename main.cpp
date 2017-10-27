@@ -43,16 +43,23 @@ int main() {
 	Matrix a(a1);
 	Matrix b(b1);
 
-	std::cout << a << std::endl;
-	std::cout << b << std::endl;
+	//std::cout << a << std::endl;
+	//std::cout << b << std::endl;
 	//std::cout << -1 * b << std::endl;
-	a -= b;
-	std::cout << a << std::endl;
+	//a -= b;
+	//std::cout << a << std::endl;
 
-	Matrix adj = a * a.adjoint();
+	//Matrix adj = a * a.adjoint();
+	Matrix adj;
+	//std::cout << adj.isSymmetric() << std::endl;
 
-	std::cout << adj.isSymmetric() << std::endl;
+	//std::cout << adj;
+
+	adj.setIdentityMatrix(3);
 
 	std::cout << adj;
 
+	std::cout << adj.hasOrthonormalColumns() << std::endl;
+
+	std::cout << adj.frobeniusNorm() << std::endl;
 }

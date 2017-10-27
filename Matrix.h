@@ -3,8 +3,6 @@
 
 #include <vector>
 
-const double eps = 1e-6;
-
 class Matrix {
 private:
 	std::vector<std::vector<double>> m;
@@ -12,6 +10,7 @@ private:
 	int nCols;
 
 public:
+	Matrix();
 	Matrix(int r, int c); //r rows, c columns - default initialised to 0 matrix.
 	Matrix(const std::vector<std::vector<double>>& data);
 
@@ -27,11 +26,15 @@ public:
 	void setElem(int r, int c, double val);
 	std::vector<std::vector<double>> getMatrix() const;
 	bool isSymmetric() const;
+	bool isDiagonal() const;
+	bool hasOrthonormalColumns() const;
+	double frobeniusNorm() const;
 
+	void updateMatrix(const std::vector<std::vector<double>>& data);
 	Matrix& setZeroMatrix();
-	Matrix& setIdentityMatrix();
+	Matrix& setIdentityMatrix(int n);
 
-	Matrix adjoint();
+	Matrix adjoint() const;
 
 	void printMatrix() const;
 	void printMatrix(std::ostream& os) const;

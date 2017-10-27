@@ -5,9 +5,25 @@
 
 #include "Matrix.h"
 
+const double eps = 1e-6;
+
 //make this internal to file
 bool sameDouble(double a, double b) {
 	return fabs(a - b) < eps;
+}
+
+double dotProduct(const std::vector<double>& a, const std::vector<double>& b) {
+	assert(a.size() == b.size());
+	double sum = 0;
+	for (int i = 0; i < a.size(); ++i) {
+		sum += a[i]*b[i];
+	}
+	return sum;
+}
+
+Matrix::Matrix() {
+	//default to 3 by 3 zero matrix
+	Matrix(3, 3);
 }
 
 Matrix::Matrix(int r, int c) {
@@ -21,14 +37,7 @@ Matrix::Matrix(int r, int c) {
 
 Matrix::Matrix(const std::vector<std::vector<double>>& data) {
 
-	assert(data.size() > 0);
-	for (int i = 0; i < data.size() - 1; ++i) {
-		assert(data[i].size() == data[i + 1].size());
-	}
-
-	m = data;
-	nRows = m.size();
-	nCols = m[0].size();
+	updateMatrix(data);
 }
 
 Matrix& Matrix::operator=(const Matrix& a) {
@@ -109,6 +118,58 @@ bool Matrix::isSymmetric() const {
 	return true;
 }
 
+bool Matrix::isDiagonal() const {
+	if (nRows != nCols) return false;
+	for (int r = 0; r < nRows; ++r) {
+		for (int c = 0; c < nCols; ++c) {
+			if (r == c) continue;
+			if (!sameDouble(m[r][c], 0.0)) return false;
+		}
+	}
+	return true;
+}
+
+bool Matrix::hasOrthonormalColumns() const {
+	Matrix tmp = adjoint();
+	std::vector<std::vector<double>> matrix = tmp.getMatrix();
+
+	for (int i = 0; i < matrix.size(); ++i) {
+		for (int j = 0; j < matrix.size(); ++j) {
+			if (i == j) {
+				if (!sameDouble(dotProduct(matrix[i], matrix[j]), 1)) {
+					return false;
+				}
+			} else {
+				if (!sameDouble(dotProduct(matrix[i], matrix[j]), 0)) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+double Matrix::frobeniusNorm() const {
+	double norm = 0;
+	for (int i = 0; i < nRows; ++i) {
+		for (int j = 0; j < nCols; ++j) {
+			norm += m[i][j]*m[i][j];
+		}
+	}
+	return sqrt(norm);
+}
+
+void Matrix::updateMatrix(const std::vector<std::vector<double>>& data) {
+	assert(data.size() > 0);
+	for (int i = 0; i < data.size() - 1; ++i) {
+		assert(data[i].size() == data[i + 1].size());
+	}
+
+	m = data;
+	nRows = m.size();
+	nCols = m[0].size();
+}
+
 Matrix& Matrix::setZeroMatrix() {
 	for (auto r = m.begin(); r != m.end(); ++r) {
 		for (auto c = r->begin(); c != r->end(); ++c) {
@@ -118,11 +179,12 @@ Matrix& Matrix::setZeroMatrix() {
 	return *this;
 }
 
-Matrix& Matrix::setIdentityMatrix() {
-	assert (nRows == nCols);
+Matrix& Matrix::setIdentityMatrix(int n) {
+	//assert (nRows == nCols);
+	m = std::vector<std::vector<double>>(n, std::vector<double>(n));
 
-	for (int r = 0; r < nRows; ++r) {
-		for (int c = 0; c < nCols; ++c) {
+	for (int r = 0; r < n; ++r) {
+		for (int c = 0; c < n; ++c) {
 			if (r != c) {
 				m[r][c] = 0;
 			} else {
@@ -130,11 +192,13 @@ Matrix& Matrix::setIdentityMatrix() {
 			}
 		}
 	}
+	nRows = n;
+	nCols = n;
 
 	return *this;
 }
 
-Matrix Matrix::adjoint() {
+Matrix Matrix::adjoint() const {
 	Matrix adj(nCols, nRows);
 
 	for (int c = 0; c < nCols; ++c) {

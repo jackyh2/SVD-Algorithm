@@ -53,6 +53,7 @@ int main() {
 	Matrix adj;
 	//std::cout << adj.isSymmetric() << std::endl;
 
+
 	//std::cout << adj;
 
 	adj.setIdentityMatrix(3);

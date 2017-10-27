@@ -119,7 +119,6 @@ bool Matrix::isSymmetric() const {
 }
 
 bool Matrix::isDiagonal() const {
-	if (nRows != nCols) return false;
 	for (int r = 0; r < nRows; ++r) {
 		for (int c = 0; c < nCols; ++c) {
 			if (r == c) continue;

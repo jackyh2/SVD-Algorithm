@@ -3,6 +3,8 @@
 
 #include <vector>
 
+const double eps = 1e-6;
+
 class Matrix {
 private:
 	std::vector<std::vector<double>> m;
@@ -15,7 +17,7 @@ public:
 	Matrix(const std::vector<std::vector<double>>& data);
 
 	Matrix& operator=(const Matrix& a);
-	Matrix& operator*=(const Matrix& a);
+	Matrix& operator*=(const Matrix& a); //right multiplication
 	Matrix& operator*=(double k);
 	Matrix& operator+=(const Matrix& a);
 	Matrix& operator-=(const Matrix& a);
@@ -40,6 +42,9 @@ public:
 	void printMatrix(std::ostream& os) const;
 
 };
+
+bool sameDouble(double a, double b);
+Matrix getGivensRotation(int r, int c, double cs, double sn, int n);
 
 Matrix operator*(const Matrix& a, const Matrix& b);
 Matrix operator*(const Matrix& a, double k);

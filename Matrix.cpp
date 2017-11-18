@@ -5,8 +5,6 @@
 
 #include "Matrix.h"
 
-const double eps = 1e-6;
-
 //make this internal to file
 bool sameDouble(double a, double b) {
 	return fabs(a - b) < eps;
@@ -223,6 +221,16 @@ void Matrix::printMatrix(std::ostream& os) const {
 		os << std::endl;
 	}
 
+}
+
+Matrix getGivensRotation(int r, int c, double cs, double sn, int n) {
+	Matrix givens;
+	givens.setIdentityMatrix(n);
+	givens.setElem(r, r, cs);
+	givens.setElem(r, c, sn);
+	givens.setElem(c, r, -sn);
+	givens.setElem(c, c, cs);
+	return givens;
 }
 
 Matrix operator*(const Matrix& a, const Matrix& b) {

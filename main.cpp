@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Matrix.h"
+#include "SVD.h"
 
 int main() {
 	std::vector<std::vector<double>> t(3);
@@ -63,4 +63,20 @@ int main() {
 	std::cout << adj.hasOrthonormalColumns() << std::endl;
 
 	std::cout << adj.frobeniusNorm() << std::endl;
+
+	std::cout << std::endl << std::endl << std::endl;
+
+
+	SVD ate(a,3);
+	//ate.printSVD();
+	std::cout << std::endl;
+	std::cout << a << std::endl;
+
+	std::cout << ate.getU()*ate.getSigma()*ate.getV() << std::endl;
+
+	std::cout << std::endl;
+
+	ate.printSVD();
+
+	std::cout << ate.getV().hasOrthonormalColumns() << std::endl;
 }

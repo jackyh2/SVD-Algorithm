@@ -30,7 +30,11 @@ void SVD::calculate_SVD(Matrix A) {
 	double s = 0;
 	bool first = true;
 
+	//int ct = 0;
+
 	while (sqrt(s) > eps*squaredNorm || first == true) {
+		//if (ct++ > 1000) break;
+
 
 		s = 0;
 		first = false;
@@ -42,6 +46,7 @@ void SVD::calculate_SVD(Matrix A) {
 				double c = 0;
 
 				for (int k = 0; k < m; ++k) {
+
 					double Uki = U.getElem(k, i);
 					double Ukj = U.getElem(k, j);
 					a += Uki*Uki;
@@ -51,8 +56,22 @@ void SVD::calculate_SVD(Matrix A) {
 
 				s += c*c;
 
-				double zeta = (b - a)/(2.0*c);
-				double t = sgn(zeta)/(fabs(zeta) + sqrt(1 + zeta*zeta));
+				//std::cout << c << std::endl;
+
+				double zeta;
+				if (!sameDouble(c, 0)) {
+					zeta = (b - a)/(2.0*c);
+				} else {
+					zeta = std::numeric_limits<double>::max();
+				}
+				
+				double t;
+				if (!sameDouble(c, 0)) {
+					t = sgn(zeta)/(fabs(zeta) + sqrt(1 + zeta*zeta));
+				} else {
+					t = 0;
+				}
+
 				double cs = 1.0/sqrt(1 + t*t);
 				double sn = cs*t;
 
@@ -65,7 +84,8 @@ void SVD::calculate_SVD(Matrix A) {
 		}
 	}
 
-	Sigma.setIdentityMatrix(n);
+	Sigma = A;
+	Sigma.setZeroMatrix();
 
 	std::vector<std::pair<int, double>> singularValues;
 
@@ -92,9 +112,11 @@ void SVD::calculate_SVD(Matrix A) {
 		Sigma.setElem(i, i, singularValues[i].second);
 	}
 
-	Matrix SigmaInverse = Sigma;
+	Matrix SigmaInverse = Sigma.adjoint(); 
+	SigmaInverse.setZeroMatrix();
+
 	for (int i = 0; i < singularValues.size(); ++i) {
-		double val = SigmaInverse.getElem(i, i);
+		double val = Sigma.getElem(i, i);
 		
 		SigmaInverse.setElem(i, i, 1.0/val);
 		

@@ -1,9 +1,21 @@
 #include <iostream>
+#include <iomanip>
 
 #include "SVD.h"
 
+void test(); 
+
 int main() {
-	std::vector<std::vector<double>> t(3);
+	std::setprecision(6);
+	std::cout << std::fixed;
+
+	test();
+}
+
+
+void test() {
+	
+	/*std::vector<std::vector<double>> t(3);
 	t[0].push_back(3.5);
 	t[0].push_back(4.5);
 	t[0].push_back(5.5);
@@ -14,7 +26,7 @@ int main() {
 	t[2].push_back(10);
 	t[2].push_back(11);
 
-	Matrix m(t);
+	Matrix m(t);*/
 
 	//m.setZeroMatrix();
 
@@ -23,25 +35,32 @@ int main() {
 
 	//std::cout << std::endl;
 
-	Matrix h = m.adjoint();
+	//Matrix h = m.adjoint();
 
 	//std::cout << h;
 
 	//std::cout << std::endl << std::endl;
 
-	std::vector<std::vector<double>> a1(3);
+	/*std::vector<std::vector<double>> a1(3);
 	a1[0] = {1, 2, 3};
 	a1[1] = {2, 3, 4};
 	a1[2] = {3, 4, 5};
 
-	std::vector<std::vector<double>> b1(3);
+	std::vector<std::vector<double>> b1(4);
 
-	b1[0] = {-1, 1, 1};
-	b1[1] = {2, 2, 2};
-	b1[2] = {3, 1, 2};
+	b1[0] = {1, 0, 0, 1};
+	b1[1] = {0, 1, 1, 1};
+	b1[2] = {0, 0, 1, 1};
+	b1[3] = {0, 0, 1, 1};
 
 	Matrix a(a1);
 	Matrix b(b1);
+
+	b.setIdentityMatrix(4);*/
+
+	
+
+
 
 	//std::cout << a << std::endl;
 	//std::cout << b << std::endl;
@@ -50,13 +69,13 @@ int main() {
 	//std::cout << a << std::endl;
 
 	//Matrix adj = a * a.adjoint();
-	Matrix adj;
+	
 	//std::cout << adj.isSymmetric() << std::endl;
 
 
 	//std::cout << adj;
 
-	adj.setIdentityMatrix(3);
+	
 
 	/*std::cout << adj;
 
@@ -66,11 +85,12 @@ int main() {
 
 	std::cout << std::endl << std::endl << std::endl;*/
 
-
-	SVD ate(a,3);
+	Matrix c({{-1, 1, 1, 4}, {2, 2, 2, 3}, {3,1,2, 19}, {9, 3, 121, 93}});
+	
+	SVD ate(c,3);
 	//ate.printSVD();
 	std::cout << std::endl;
-	std::cout << a << std::endl;
+	std::cout << c << std::endl;
 
 
 	//ate.printSVD();

@@ -216,7 +216,11 @@ void Matrix::printMatrix(std::ostream& os) const {
 	//os << std::fixed;
 	for (auto r = m.begin(); r != m.end(); ++r) {
 		for (auto c = r->begin(); c != r->end(); ++c){
-			os << *c << " ";
+			if (!sameDouble(*c, 0)) {
+				os << *c << " ";
+			} else {
+				os << 0.000000 << " ";
+			}
 		}
 		os << std::endl;
 	}

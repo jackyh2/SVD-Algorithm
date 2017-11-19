@@ -82,8 +82,7 @@ void SVD::calculate_SVD(Matrix A) {
 		}
 	}
 
-	Sigma = A;
-	Sigma.setZeroMatrix();
+	
 
 	std::vector<std::pair<int, double>> singularValues;
 
@@ -106,6 +105,11 @@ void SVD::calculate_SVD(Matrix A) {
 
 	std::reverse(singularValues.begin(), singularValues.end());
 
+	//std::cout << U.numRows() << " " << U.numCols() << " " << V.numRows() << " " << V.numCols() << std::endl;
+
+	Sigma = A;
+	Sigma.setZeroMatrix();
+
 	for (int i = 0; i < singularValues.size(); ++i) {
 		Sigma.setElem(i, i, singularValues[i].second);
 	}
@@ -123,12 +127,21 @@ void SVD::calculate_SVD(Matrix A) {
 	Matrix tmpU = U;
 	Matrix tmpV = V;
 
+	//std::cout << tmpU.numRows() << " " << tmpU.numCols() << std::endl;
+
 	for (int i = 0; i < m; ++i) {
 		for (int j = 0; j < n; ++j) {
+			//std::cout << i << " " << j << " " << singularValues[j].first << std::endl;
 			double tmp1 = tmpU.getElem(i, singularValues[j].first);
-			double tmp2 = tmpV.getElem(i, singularValues[j].first);
 			
 			U.setElem(i, j, tmp1);
+			
+		}
+	}
+
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			double tmp2 = tmpV.getElem(i, singularValues[j].first);
 			V.setElem(i, j, tmp2);
 		}
 	}

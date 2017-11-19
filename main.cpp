@@ -34,8 +34,11 @@ int main() {
 	SVD svd(M);
 
 
-	//Uncomment the below code to find out the biggest difference in the entries between the SVD and M.
+	//std::cout << M << std::endl;
 
+	//std::cout << svd.getU()*svd.getSigma()*(svd.getV().adjoint()) << std::endl;
+
+	////Uncomment the below code to find out the biggest difference in the entries between the SVD and M.
 	//std::cout << maxMetric(M, svd.getU()*svd.getSigma()*(svd.getV().adjoint())) << std::endl;
 
 	svd.printSVD();

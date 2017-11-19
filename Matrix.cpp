@@ -5,7 +5,6 @@
 
 #include "Matrix.h"
 
-//make this internal to file
 bool sameDouble(double a, double b) {
 	return fabs(a - b) < eps;
 }
@@ -177,7 +176,6 @@ Matrix& Matrix::setZeroMatrix() {
 }
 
 Matrix& Matrix::setIdentityMatrix(int n) {
-	//assert (nRows == nCols);
 	m = std::vector<std::vector<double>>(n, std::vector<double>(n));
 
 	for (int r = 0; r < n; ++r) {
@@ -212,8 +210,6 @@ void Matrix::printMatrix() const {
 
 
 void Matrix::printMatrix(std::ostream& os) const {
-	//std::setprecision(2);
-	//os << std::fixed;
 	for (auto r = m.begin(); r != m.end(); ++r) {
 		for (auto c = r->begin(); c != r->end(); ++c){
 			if (!sameDouble(*c, 0)) {

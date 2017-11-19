@@ -18,8 +18,10 @@ void SVD::calculate_SVD(Matrix A) {
 	int m = A.numRows();
 	int n = A.numCols();
 
+	//Set U to be A. 
 	U = A;
 
+	//Set V to be the n x n identity matrix.
 	V.setIdentityMatrix(n);
 
 	double squaredNorm = U.frobeniusNorm();
@@ -28,11 +30,8 @@ void SVD::calculate_SVD(Matrix A) {
 	double s = 0;
 	bool first = true;
 
-	//int ct = 0;
-
+	//repeat until convergence
 	while (sqrt(s) > eps*squaredNorm || first == true) {
-		//if (ct++ > 1000) break;
-
 
 		s = 0;
 		first = false;
@@ -44,7 +43,6 @@ void SVD::calculate_SVD(Matrix A) {
 				double c = 0;
 
 				for (int k = 0; k < m; ++k) {
-
 					double Uki = U.getElem(k, i);
 					double Ukj = U.getElem(k, j);
 					a += Uki*Uki;
@@ -54,8 +52,8 @@ void SVD::calculate_SVD(Matrix A) {
 
 				s += c*c;
 
-				//std::cout << c << std::endl;
 
+				//Find the values of cos(theta) and sin(theta).
 				double zeta;
 				if (!sameDouble(c, 0)) {
 					zeta = (b - a)/(2.0*c);
@@ -73,6 +71,7 @@ void SVD::calculate_SVD(Matrix A) {
 				double cs = 1.0/sqrt(1 + t*t);
 				double sn = cs*t;
 
+				//Construct the givens rotation matrix
 				Matrix GivensRotation = getGivensRotation(i, j, cs, sn, n);
 
 				U *= GivensRotation;
@@ -83,7 +82,7 @@ void SVD::calculate_SVD(Matrix A) {
 	}
 
 	
-
+	//scrape all the singular values from the matrix U. These are just the l_2 norms of the columns.
 	std::vector<std::pair<int, double>> singularValues;
 
 	for (int i = 0; i < n; ++i) {
@@ -94,10 +93,13 @@ void SVD::calculate_SVD(Matrix A) {
 		}
 		singularValue = sqrt(singularValue);
 
-		singularValues.push_back(std::make_pair(i,singularValue));
-		//Sigma.setElem(i, i, singularValue);
+
+		if (!sameDouble(singularValue,0)) singularValues.push_back(std::make_pair(i,singularValue));
 	}
 
+
+	//Sort the singular values so we can present Sigma in the form such that the singular values
+	//are in decreasing order of magnitude
 	std::sort(singularValues.begin(), singularValues.end(),[](const std::pair<int, double> &lhs,
 													const std::pair<int, double> &rhs) {
 														return lhs.second < rhs.second;
@@ -105,8 +107,8 @@ void SVD::calculate_SVD(Matrix A) {
 
 	std::reverse(singularValues.begin(), singularValues.end());
 
-	//std::cout << U.numRows() << " " << U.numCols() << " " << V.numRows() << " " << V.numCols() << std::endl;
 
+	//Write to the Sigma matrix
 	Sigma = A;
 	Sigma.setZeroMatrix();
 
@@ -114,6 +116,7 @@ void SVD::calculate_SVD(Matrix A) {
 		Sigma.setElem(i, i, singularValues[i].second);
 	}
 
+	//Calculate the inverse of the Sigma matrix.
 	Matrix SigmaInverse = Sigma.adjoint(); 
 	SigmaInverse.setZeroMatrix();
 
@@ -124,15 +127,20 @@ void SVD::calculate_SVD(Matrix A) {
 		
 	}
 
+
+	//Reorder the columns of U and V according to the singular values which we sorted above.
 	Matrix tmpU = U;
 	Matrix tmpV = V;
 
-	//std::cout << tmpU.numRows() << " " << tmpU.numCols() << std::endl;
-
 	for (int i = 0; i < m; ++i) {
 		for (int j = 0; j < n; ++j) {
-			//std::cout << i << " " << j << " " << singularValues[j].first << std::endl;
-			double tmp1 = tmpU.getElem(i, singularValues[j].first);
+
+			double tmp1;
+			if (j < singularValues.size()) {
+				tmp1 = tmpU.getElem(i, singularValues[j].first);
+			} else {
+				tmp1 = tmpU.getElem(i, j);
+			}
 			
 			U.setElem(i, j, tmp1);
 			
@@ -141,8 +149,13 @@ void SVD::calculate_SVD(Matrix A) {
 
 	for (int i = 0; i < n; ++i) {
 		for (int j = 0; j < n; ++j) {
-			double tmp2 = tmpV.getElem(i, singularValues[j].first);
-			V.setElem(i, j, tmp2);
+			double tmp1;
+			if (j < singularValues.size()) {
+				tmp1 = tmpV.getElem(i, singularValues[j].first);
+			} else {
+				tmp1 = tmpV.getElem(i, j);
+			}
+			V.setElem(i, j, tmp1);
 		}
 	}
 

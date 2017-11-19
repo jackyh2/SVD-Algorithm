@@ -19,15 +19,15 @@ int main() {
 	//m.setZeroMatrix();
 
 
-	m.printMatrix();
+	//m.printMatrix();
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 
 	Matrix h = m.adjoint();
 
-	std::cout << h;
+	//std::cout << h;
 
-	std::cout << std::endl << std::endl;
+	//std::cout << std::endl << std::endl;
 
 	std::vector<std::vector<double>> a1(3);
 	a1[0] = {1, 2, 3};
@@ -58,13 +58,13 @@ int main() {
 
 	adj.setIdentityMatrix(3);
 
-	std::cout << adj;
+	/*std::cout << adj;
 
 	std::cout << adj.hasOrthonormalColumns() << std::endl;
 
 	std::cout << adj.frobeniusNorm() << std::endl;
 
-	std::cout << std::endl << std::endl << std::endl;
+	std::cout << std::endl << std::endl << std::endl;*/
 
 
 	SVD ate(a,3);
@@ -72,11 +72,15 @@ int main() {
 	std::cout << std::endl;
 	std::cout << a << std::endl;
 
-	std::cout << ate.getU()*ate.getSigma()*ate.getV() << std::endl;
 
-	std::cout << std::endl;
+	//ate.printSVD();
+
+
+	std::cout << ate.getU()*ate.getSigma()*(ate.getV().adjoint()) << std::endl;
+
+	//std::cout << std::endl;
 
 	ate.printSVD();
 
-	std::cout << ate.getV().hasOrthonormalColumns() << std::endl;
+	//std::cout << ate.getU().hasOrthonormalColumns() << std::endl;
 }

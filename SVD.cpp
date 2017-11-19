@@ -67,33 +67,49 @@ void SVD::calculate_SVD(Matrix A) {
 
 	Sigma.setIdentityMatrix(n);
 
-	std::vector<double> singularValues;
+	std::vector<std::pair<int, double>> singularValues;
 
 	for (int i = 0; i < n; ++i) {
 		double singularValue = 0;
 		for (int k = 0; k < m; ++k) {
-			double val = A.getElem(k, i);
+			double val = U.getElem(k, i);
 			singularValue += val*val;
 		}
 		singularValue = sqrt(singularValue);
 
-		singularValues.push_back(singularValue);
+		singularValues.push_back(std::make_pair(i,singularValue));
 		//Sigma.setElem(i, i, singularValue);
 	}
 
-	std::sort(singularValues.begin(), singularValues.end());
+	std::sort(singularValues.begin(), singularValues.end(),[](const std::pair<int, double> &lhs,
+													const std::pair<int, double> &rhs) {
+														return lhs.second < rhs.second;
+													});
 
 	std::reverse(singularValues.begin(), singularValues.end());
 
 	for (int i = 0; i < singularValues.size(); ++i) {
-		Sigma.setElem(i, i, singularValues[i]);
+		Sigma.setElem(i, i, singularValues[i].second);
 	}
 
 	Matrix SigmaInverse = Sigma;
-	for (int i = 0; i < n; ++i) {
+	for (int i = 0; i < singularValues.size(); ++i) {
 		double val = SigmaInverse.getElem(i, i);
-		if (!sameDouble(val, 0)) {
-			SigmaInverse.setElem(i, i, 1.0/val);
+		
+		SigmaInverse.setElem(i, i, 1.0/val);
+		
+	}
+
+	Matrix tmpU = U;
+	Matrix tmpV = V;
+
+	for (int i = 0; i < m; ++i) {
+		for (int j = 0; j < n; ++j) {
+			double tmp1 = tmpU.getElem(i, singularValues[j].first);
+			double tmp2 = tmpV.getElem(i, singularValues[j].first);
+			
+			U.setElem(i, j, tmp1);
+			V.setElem(i, j, tmp2);
 		}
 	}
 

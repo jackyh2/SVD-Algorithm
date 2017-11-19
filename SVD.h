@@ -9,12 +9,10 @@ private:
 	Matrix Sigma;
 	Matrix V;
 
-	int rank;
-
 	void calculate_SVD(Matrix A);
 
 public:
-	SVD(Matrix A, int r);
+	SVD(Matrix A);
 
 	void printSVD() const;
 	void printSVD(std::ostream& os) const;

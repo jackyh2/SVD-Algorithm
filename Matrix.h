@@ -53,6 +53,8 @@ bool operator==(const Matrix& a, const Matrix& b);
 Matrix operator+(const Matrix& a, const Matrix& b);
 Matrix operator-(const Matrix& a, const Matrix& b);
 
+double maxMetric(const Matrix& a, const Matrix& b);
+
 std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
 

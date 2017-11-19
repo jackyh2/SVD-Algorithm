@@ -305,6 +305,18 @@ bool operator==(const Matrix& a, const Matrix& b) {
 	return true;
 }
 
+double maxMetric(const Matrix& a, const Matrix& b) {
+	assert(a.numCols() == b.numCols() && a.numRows() == b.numRows());
+
+	double distance = 0;
+
+	for (int r = 0; r < a.numRows(); ++r) {
+		for (int c = 0; c < a.numCols(); ++c) {
+			distance = fmax(distance, fabs(a.getElem(r, c) - b.getElem(r, c)));
+		}
+	}
+	return distance;
+}
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m) {
 	m.printMatrix(os);

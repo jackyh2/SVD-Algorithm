@@ -3,9 +3,7 @@
 #include <iostream>
 #include "SVD.h"
 
-SVD::SVD(Matrix A, int r) {
-	assert(r <= A.numRows() && r <= A.numCols());
-	rank = r;
+SVD::SVD(Matrix A) {
 	calculate_SVD(A);
 }
 
@@ -64,7 +62,7 @@ void SVD::calculate_SVD(Matrix A) {
 				} else {
 					zeta = std::numeric_limits<double>::max();
 				}
-				
+
 				double t;
 				if (!sameDouble(c, 0)) {
 					t = sgn(zeta)/(fabs(zeta) + sqrt(1 + zeta*zeta));

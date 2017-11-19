@@ -9,7 +9,38 @@ int main() {
 	std::setprecision(6);
 	std::cout << std::fixed;
 
-	test();
+	/*
+	*	INPUT: ./ImageCompression < input > output
+	*	input format:
+	*	 two space separated numbers m and n, which denote the number of rows and columns of the matrix
+	*	 m x n space separated numbers, which denote the entries in the matrix.
+	*	
+	*	OUTPUT: It will print out 3 matrices: U, Sigma, V each separated by a space.
+	*/
+
+	int m, n;
+	std::cin >> m >> n;
+
+	std::vector<std::vector<double>> data(m, std::vector<double>(n));
+
+	for (int i = 0; i < m; ++i) {
+		for (int j = 0; j < n; ++j) {
+			std::cin >> data[i][j];
+		}
+	}
+
+	Matrix M(data);
+
+	SVD svd(M);
+
+
+	//Uncomment the below code to find out the biggest difference in the entries between the SVD and M.
+
+	//std::cout << maxMetric(M, svd.getU()*svd.getSigma()*(svd.getV().adjoint())) << std::endl;
+
+	svd.printSVD();
+
+	//test();
 }
 
 
@@ -86,8 +117,8 @@ void test() {
 	std::cout << std::endl << std::endl << std::endl;*/
 
 	Matrix c({{-1, 1, 1, 4}, {2, 2, 2, 3}, {3,1,2, 19}, {9, 3, 121, 93}});
-	
-	SVD ate(c,3);
+
+	SVD ate(c);
 	//ate.printSVD();
 	std::cout << std::endl;
 	std::cout << c << std::endl;

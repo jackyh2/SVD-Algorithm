@@ -11,3 +11,5 @@ Input to the algorithm:
 First line consists of two space separated numbers m and n, which denote the number of rows and columns in the matrix.
 Then m lines follow, where each line consists of n space separated real numbers representing the matrix.
 
+Output:
+Three matrices U, Sigma, V such that A = U x Sigma x V^*

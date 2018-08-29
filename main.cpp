@@ -6,7 +6,7 @@
 void printAdditionalInfo(Matrix M, SVD svd); 
 
 	/*
-	*	INPUT: ./ImageCompression < input > output
+	*	INPUT: ./svd < input > output
 	*	input format:
 	*	 two space separated numbers m and n, which denote the number of rows and columns of the matrix
 	*	 m x n space separated numbers, which denote the entries in the matrix M.

@@ -2,10 +2,10 @@ CC=g++
 CFLAGS = -std=c++11 -Wall -Werror -g
 OBJS = main.o Matrix.o SVD.o
 
-all: ImageCompressor
+all: svd
 
-ImageCompressor: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o ImageCompressor 
+svd: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o svd 
 
 main.o: main.cpp Matrix.h
 	$(CC) $(CFLAGS) -c main.cpp
@@ -17,4 +17,4 @@ Matrix.o: Matrix.cpp Matrix.h
 	$(CC) $(CFLAGS) -c Matrix.cpp
 
 clean:
-	rm $(OBJS) ImageCompressor 
+	rm $(OBJS) svd 
